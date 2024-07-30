@@ -1,4 +1,9 @@
-export default function Cart({ items, onUpdateItemQuantity }) {
+import { All_items } from "../data/shopping-cart-context";
+import { useContext } from "react";
+export default function Cart({onUpdateItemQuantity }) {
+  //useContext를 통해 items값을 가져옴.
+  const {items,updateToCart} = useContext(All_items)
+  //초기값은 0이고, acc => 누적값, item => items의 값이다.
   const totalPrice = items.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
@@ -20,11 +25,11 @@ export default function Cart({ items, onUpdateItemQuantity }) {
                   <span> ({formattedPrice})</span>
                 </div>
                 <div className="cart-item-actions">
-                  <button onClick={() => onUpdateItemQuantity(item.id, -1)}>
+                  <button onClick={() => updateToCart(item.id, -1)}>
                     -
                   </button>
                   <span>{item.quantity}</span>
-                  <button onClick={() => onUpdateItemQuantity(item.id, 1)}>
+                  <button onClick={() => updateToCart(item.id, 1)}>
                     +
                   </button>
                 </div>
