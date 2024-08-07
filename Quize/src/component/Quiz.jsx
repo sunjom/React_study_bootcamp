@@ -2,6 +2,8 @@ import { useCallback, useState } from 'react'
 import QUSTION from '../qustion.js'
 import EndImg from '../assets/quiz-complete.png'
 import Timer from './Timer.jsx';
+import AnswerBox from './AnswerBox.jsx';
+import QuizComp from './quizComp.jsx';
 export default function Quiz(){
     const [isCorrect , setIsCorrect] = useState('');
     const [user, setUser] = useState([]);
@@ -40,36 +42,17 @@ export default function Quiz(){
             </div>
         )
     }
-
-    const shuffleArr = [...QUSTION[idx].answer];
-    shuffleArr.sort(() => Math.random() -0.5);
+    
     return(
         <div id="quiz">
-            <div id='question'>
-                <Timer key={idx} Timeout={10000} onTimeout={handleSkip}/>
-                <h2>{QUSTION[idx].text}</h2>
-                <ul id="answers">
-                    {shuffleArr.map((awr) => {
-                        //첫 랜더링엔 awr => undefined, user = []이다.
-                        //하지만, 버튼을 누르면 awr = 값, user = [값]으로 적용된 후 랜더링 된다.
-                        const isSelected = user[user.length -1] == awr
-                        let CSS = ''
-                        if(isCorrect === 'answered' && isSelected){
-                            CSS = 'selected'
-                        }
-
-                        if((isCorrect === 'correct' || isCorrect === 'wrong') && isSelected){
-                            CSS = isCorrect
-                            console.log("CSS");
-                        }
-                        return(
-                            <li key={awr} className='answer'>
-                                <button className={CSS} onClick={() => handleSelectAnswer(awr)}>{awr}</button>
-                            </li>
-                        )
-                    })}
-                </ul>
-            </div>
+            <QuizComp 
+            key={idx} 
+            handleSkip={handleSkip}
+            question= {QUSTION[idx]}
+            isCorrect={isCorrect}
+            user={user}
+            handleSelectAnswer={handleSelectAnswer} 
+            />
         </div>
     )
 }
