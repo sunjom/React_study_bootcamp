@@ -11,6 +11,7 @@ function App() {
 
   function handleSetCount(newCount){
     setChosenCount(newCount);
+    console.log(newCount);
   }
   return (
     <>
