@@ -3,15 +3,6 @@ import Input from "./Input";
 import {isEmail, isNotEmpty, hasMinLength} from '../util/validation'
 
 export default function LoginState() {
-    const [data,setData] = useState({
-        email:'',
-        password:'',
-    })
-
-    const [validation,setValidation] = useState({
-        email:false,
-        password:false,
-    })
 
     const showEmailValidation = 
         validation.email &&
@@ -27,25 +18,6 @@ export default function LoginState() {
         console.log(data);
     }
 
-    function handleChange(identifier,value){
-        setData((prevData) =>({
-            ...prevData,
-            [identifier]:value
-        }))
-        setValidation((prevVaildation)=>({
-            ...prevVaildation,
-            [identifier]:false
-        }))
-
-    }
-
-    function handleBlur(identifier){
-        setValidation((prevVaildation)=>({
-            ...prevVaildation,
-            [identifier]:true
-        }))
-
-    }
     return (
         <form onSubmit={handleSubmit}>
         <h2>Login</h2>
