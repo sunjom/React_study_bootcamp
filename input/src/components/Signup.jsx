@@ -1,16 +1,23 @@
+import { useState } from "react";
+
 export default function Signup() {
+  const [passwordCheck, setPasswordCheck] = useState(false);
 
   function handleSubmit(e){
     e.preventDefault();
 
     const names = new FormData(e.target);
-    console.log(names.entries());
     //nams.entries를 통해 [[값1,값2],[값1,값2]] 형식으로 바꾼다
     //Object.fromEntries를 통해 값1을 key, 값2를 value인 객체로 만든다.
     const data = Object.fromEntries(names.entries());
     const All = names.getAll('acquisition');
     data.acquisition = All;
     
+    if(data.password !== data['confirm-password']){
+      setPasswordCheck(true);
+      return;
+    }
+    console.log(data);
     e.target.reset();
   }
 
@@ -21,13 +28,13 @@ export default function Signup() {
 
       <div className="control">
         <label htmlFor="email">Email</label>
-        <input id="email" type="email" name="email" />
+        <input id="email" type="email" name="email" required/>
       </div>
 
       <div className="control-row">
         <div className="control">
           <label htmlFor="password">Password</label>
-          <input id="password" type="password" name="password" />
+          <input id="password" type="password" name="password" minLength={6} required/>
         </div>
 
         <div className="control">
@@ -36,7 +43,10 @@ export default function Signup() {
             id="confirm-password"
             type="password"
             name="confirm-password"
+            minLength={6}
+            required
           />
+          <div className="control-error">{passwordCheck && <p>password not matched!</p>}</div>
         </div>
       </div>
 

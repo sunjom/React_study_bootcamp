@@ -1,4 +1,6 @@
 import { useRef, useState } from "react";
+import Input from "./Input";
+import {isEmail, isNotEmpty, hasMinLength} from '../util/validation'
 
 export default function LoginState() {
     const [data,setData] = useState({
@@ -12,7 +14,14 @@ export default function LoginState() {
     })
 
     const showEmailValidation = 
-        validation.email && !data.email.includes('@');
+        validation.email &&
+        (isEmail(data.email) ||
+        isNotEmpty(data.email));
+    
+    const showPasswordValidation = 
+        validation.password &&
+        (hasMinLength(data.password,6) ||
+        isNotEmpty(data.password));
     function handleSubmit(e){
         e.preventDefault();
         console.log(data);
@@ -42,23 +51,26 @@ export default function LoginState() {
         <h2>Login</h2>
 
         <div className="control-row">
-            <div className="control no-margin">
-            <label htmlFor="email">Email</label>
-            <input id="email" type="email" name="email" 
+            <Input
+                Label="Email"
+                Id="email"
+                error={showEmailValidation}
+                type="email" 
+                name="email" 
                 onChange={(e) => handleChange('email',e.target.value)}
                 value={data.email}
                 onBlur={() => handleBlur('email')}
             />
-            </div>
-            <div className="control-error">{showEmailValidation && <p>Please enter a valid email address.</p>}</div>
-            <div className="control no-margin">
-            <label htmlFor="password">Password</label>
-            <input id="password" type="password" name="password" 
+            <Input
+                Label="Password"
+                Id="password"
+                error={showPasswordValidation}
+                type="password" 
+                name="password" 
                 onChange={(e) => handleChange('password',e.target.value)}
                 value={data.password}
+                onBlur={() => handleBlur('password')}
             />
-            
-            </div>
         </div>
 
         <p className="form-actions">
