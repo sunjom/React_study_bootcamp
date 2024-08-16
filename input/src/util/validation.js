@@ -3,11 +3,11 @@ export function isEmail(value) {
 }
 
 export function isNotEmpty(value) {
-  return value.trim() == '';
+  return value.trim() === '';
 }
 
 export function hasMinLength(value, minLength) {
-  return value.length >= minLength;
+  return value.length < minLength;
 }
 
 export function isEqualsToOtherValue(value, otherValue) {

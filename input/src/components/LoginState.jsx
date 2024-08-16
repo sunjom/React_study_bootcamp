@@ -1,21 +1,27 @@
 import { useRef, useState } from "react";
 import Input from "./Input";
 import {isEmail, isNotEmpty, hasMinLength} from '../util/validation'
+import { useInput } from "../hooks/useInput";
 
 export default function LoginState() {
+    const {
+        data:email,
+        errorCheck:showEmailValidation,
+        handleChange:handleEmailChange,
+        handleBlur:handleEmailBlur,
+    } = useInput('',(data) => isEmail(data) || isNotEmpty(data));
 
-    const showEmailValidation = 
-        validation.email &&
-        (isEmail(data.email) ||
-        isNotEmpty(data.email));
-    
-    const showPasswordValidation = 
-        validation.password &&
-        (hasMinLength(data.password,6) ||
-        isNotEmpty(data.password));
+    const {
+        data:password,
+        errorCheck:showPasswordValidation,
+        handleChange:handlePasswordChange,
+        handleBlur:handlePasswordBlur,
+     } = useInput('',(data) => hasMinLength(data,6))
+
     function handleSubmit(e){
         e.preventDefault();
         console.log(data);
+        
     }
 
     return (
@@ -26,22 +32,22 @@ export default function LoginState() {
             <Input
                 Label="Email"
                 Id="email"
-                error={showEmailValidation}
+                error={showEmailValidation && 'Please enter a valid email!'}
                 type="email" 
                 name="email" 
-                onChange={(e) => handleChange('email',e.target.value)}
-                value={data.email}
-                onBlur={() => handleBlur('email')}
+                onChange={handleEmailChange}
+                value={email}
+                onBlur={handleEmailBlur}
             />
             <Input
                 Label="Password"
                 Id="password"
-                error={showPasswordValidation}
+                error={showPasswordValidation && 'Please enter a valid password!'}
                 type="password" 
                 name="password" 
-                onChange={(e) => handleChange('password',e.target.value)}
-                value={data.password}
-                onBlur={() => handleBlur('password')}
+                onChange={handlePasswordChange}
+                value={password}
+                onBlur={handlePasswordBlur}
             />
         </div>
 
