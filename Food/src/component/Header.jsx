@@ -1,6 +1,19 @@
+import { useContext } from 'react'
 import Logo from '../assets/logo.jpg'
 import Button from './UI/Button'
+import CartContext from '../store/CartContext'
+import UserProgressContext from '../store/UserProgressContext';
 export default function Headers(){
+    const CartCtx = useContext(CartContext);
+    const userCtx = useContext(UserProgressContext);
+
+    const totalCartItems = CartCtx.items.reduce((totalNumber,item) => {
+        return totalNumber + item.count;
+    },0);
+
+    function handleShowCart(){
+        userCtx.showCart();
+    }
     return(
         <div className="flex justify-between items-center px-[10%] py-[3rem]">
             <div className='flex items-center'>
@@ -15,7 +28,7 @@ export default function Headers(){
                 />
                 <h1>ReactFood</h1>
             </div>
-            <Button className='text-3xl text-[#ffc404]'>Cart (0)</Button>
+            <Button onClick={handleShowCart} className='text-3xl text-[#ffc404]'>Cart ({totalCartItems})</Button>
         </div>
     )
 }
